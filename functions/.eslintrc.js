@@ -26,6 +26,7 @@ module.exports = {
   ],
   rules: {
     "quotes": ["warn", "double"],
+    "linebreak-style": ["warn", "windows"],
     "import/no-unresolved": 0,
   },
 };

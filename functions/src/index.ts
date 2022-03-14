@@ -2,13 +2,14 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import * as express from "express";
 import * as bodyParser from "body-parser";
+import {v4 as uuid} from 'uuid';
 
 admin.initializeApp(functions.config().firebase);
 
 const app = express();
 const main = express();
 
-main.use("players", app);
+main.use("/players", app);
 main.use(bodyParser.json());
 main.use(bodyParser.urlencoded({extended: false}));
 
@@ -23,12 +24,8 @@ interface Player
     team: string
 }
 
-app.post('/players', async (req, res) => {
-  const player: Player = {
-    id: "1",
-    name: "Cristiano Ronaldo",
-    number: "7",
-    team: "Manchester United",
-  };
+app.post('/', async (req, res) => {
+  const player: Player = {...req.body, id: uuid()};
   await db.collection("player").add(player);
+  res.status(201).send();
 });
